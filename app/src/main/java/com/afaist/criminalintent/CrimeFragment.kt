@@ -39,6 +39,10 @@ class CrimeFragment() : Fragment() {
         return view
     }
 
+    /**
+     * On start
+     *
+     */
     override fun onStart() {
         super.onStart()
         val titleWatcher = object : TextWatcher {

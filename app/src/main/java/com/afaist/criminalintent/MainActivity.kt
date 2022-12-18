@@ -3,6 +3,11 @@ package com.afaist.criminalintent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
+/**
+ * Main activity
+ *
+ * @constructor Create empty Main activity
+ */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

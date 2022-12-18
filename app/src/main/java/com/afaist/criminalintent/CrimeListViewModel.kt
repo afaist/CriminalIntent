@@ -3,6 +3,9 @@ package com.afaist.criminalintent
 import androidx.lifecycle.ViewModel
 
 class CrimeListViewModel : ViewModel() {
+    /**
+     * Crimes
+     */
     val crimes = mutableListOf<Crime>()
 
     init {

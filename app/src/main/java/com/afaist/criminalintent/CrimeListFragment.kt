@@ -14,10 +14,18 @@ import androidx.recyclerview.widget.RecyclerView
 
 private const val TAG = "CrimeListFragment"
 
+/**
+ * Crime list fragment
+ *
+ * @constructor Create empty Crime list fragment
+ */
 class CrimeListFragment : Fragment() {
     private lateinit var crimeRecyclerView: RecyclerView
     private var adapter: CrimeAdapter? = null
 
+    /**
+     * Data model
+     */
     private val crimeListViewModel: CrimeListViewModel by lazy {
         ViewModelProvider(this)[CrimeListViewModel::class.java]
     }
@@ -66,6 +74,11 @@ class CrimeListFragment : Fragment() {
             itemView.setOnClickListener(this)
         }
 
+        /**
+         * Bind
+         *
+         * @param crime
+         */
         fun bind(crime: Crime) {
             this.crime = crime
             titleTextView.text = this.crime.title

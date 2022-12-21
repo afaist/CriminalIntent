@@ -10,8 +10,9 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import java.text.DateFormat
 
-class CrimeFragment() : Fragment() {
+class CrimeFragment : Fragment() {
     private lateinit var crime: Crime
     private lateinit var titleField: EditText
     private lateinit var dateButton: Button
@@ -33,7 +34,7 @@ class CrimeFragment() : Fragment() {
         solvedCheckBox = view.findViewById(R.id.crime_solved)
 
         dateButton.apply {
-            text = crime.date.toString()
+            text = DateFormat.getDateInstance(DateFormat.FULL).format(crime.date)
             isEnabled = false
         }
         return view

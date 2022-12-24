@@ -1,5 +1,6 @@
 package com.afaist.criminalintent
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.text.DateFormat
+import java.util.*
 
 private const val TAG = "CrimeListFragment"
 
@@ -22,7 +23,28 @@ private const val TAG = "CrimeListFragment"
  * @constructor Create empty Crime list fragment
  */
 class CrimeListFragment : Fragment() {
+    /**
+     * Callbacks
+     *
+     * @constructor Create empty Callbacks
+     */
+    interface Callbacks {
+        fun onCrimeSelected(crimeId: UUID)
+    }
+
+    /**
+     * Callbacks
+     */
+    private var callbacks: Callbacks? = null
+
+    /**
+     * Crime recycler view
+     */
     private lateinit var crimeRecyclerView: RecyclerView
+
+    /**
+     * Adapter
+     */
     private var adapter: CrimeAdapter? = CrimeAdapter(emptyList())
 
     /**
@@ -32,12 +54,35 @@ class CrimeListFragment : Fragment() {
         ViewModelProvider(this)[CrimeListViewModel::class.java]
     }
 
-     companion object {
+    /**
+     * On attach
+     *
+     * @param context
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
+
+    /**
+     * Companion
+     *
+     * @constructor Create empty Companion
+     */
+    companion object {
         fun newInstance(): CrimeListFragment {
             return CrimeListFragment()
         }
     }
 
+    /**
+     * On create view
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,6 +97,12 @@ class CrimeListFragment : Fragment() {
         return view
     }
 
+    /**
+     * On view created
+     *
+     * @param view
+     * @param savedInstanceState
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         crimeListViewModel.crimeListLiveData.observe(
@@ -63,11 +114,33 @@ class CrimeListFragment : Fragment() {
             }
         }
     }
+
+    /**
+     * On detach
+     *
+     */
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
+    /**
+     * Update u i
+     *
+     * @param crimes
+     */
     private fun updateUI(crimes: List<Crime>) {
         adapter = CrimeAdapter(crimes)
         crimeRecyclerView.adapter = adapter
     }
 
+    /**
+     * Crime holder
+     *
+     * @constructor
+     *
+     * @param view
+     */
     private inner class CrimeHolder(view: View) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -97,12 +170,22 @@ class CrimeListFragment : Fragment() {
             }
         }
 
-        override fun onClick(p0: View?) {
-            Toast.makeText(context, "${crime.title} pressed!", Toast.LENGTH_SHORT)
-                .show()
+        /**
+         * On click
+         *
+         * @param v
+         */
+        override fun onClick(v: View?) {
+            callbacks?.onCrimeSelected(crime.id)
         }
     }
 
+    /**
+     * Crime adapter
+     *
+     * @property crimes
+     * @constructor Create empty Crime adapter
+     */
     private inner class CrimeAdapter(var crimes: List<Crime>) :
         RecyclerView.Adapter<CrimeHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
@@ -111,11 +194,21 @@ class CrimeListFragment : Fragment() {
 
         }
 
+        /**
+         * On bind view holder
+         *
+         * @param holder
+         * @param position
+         */
         override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
             val crime = crimes[position]
             holder.bind(crime)
         }
 
+        /**
+         * Get item count
+         *
+         */
         override fun getItemCount() = crimes.size
     }
 }

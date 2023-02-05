@@ -7,4 +7,5 @@
     <string name="crime_date">Crime Date</string>
     <string name="crime_title">Crime Title</string>
     <string name="is_resolved">Is resolved</string>
+    <string name="start_time">11:56</string>
 </resources>
